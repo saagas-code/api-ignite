@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  created_at  DateTime @default(now())
+  Car         Car[]
+
+  @@map("categories")
+}
+
+model Specification {
+  id               String             @id @default(uuid())
+  name             String
+  description      String
+  created_at       DateTime           @default(now())
+  SpecificationCar SpecificationCar[]
+
+  @@map("specifications")
+}
+
+model User {
+  id             String      @id @default(uuid())
+  name           String
+  password       String
+  email          String      @unique
+  driver_license String
+  avatar         String?
+  isAdmin        Boolean     @default(false)
+  created_at     DateTime    @default(now())
+  Rental         Rental[]
+  UserToken      UserToken[]
+}
+
+model Car {
+  id               String             @id @default(uuid())
+  name             String
+  description      String
+  daily_rate       Decimal
+  available        Boolean            @default(true)
+  license_plate    String             @unique
+  fine_amount      Decimal
+  brand            String
+  category_id      String
+  category         Category           @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  created_at       DateTime           @default(now())
+  SpecificationCar SpecificationCar[]
+  CarImage         CarImage[]
+  Rental           Rental[]
+
+  @@map("cars")
+}
+
+model SpecificationCar {
+  id               String        @id @default(uuid())
+  car_id           String
+  car              Car           @relation(fields: [car_id], references: [id])
+  specification_id String
+  specification    Specification @relation(fields: [specification_id], references: [id], onDelete: Cascade)
+  created_at       DateTime      @default(now())
+
+  @@map("specifications_cars")
+}
+
+model CarImage {
+  id         String   @id @default(uuid())
+  car_id     String
+  car        Car      @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  image_name String
+  created_at DateTime @default(now())
+
+  @@map("cars_image")
+}
+
+model Rental {
+  id                   String    @id @default(uuid())
+  car_id               String
+  car                  Car       @relation(fields: [car_id], references: [id], onDelete: Cascade)
+  user_id              String
+  user                 User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  start_date           DateTime  @default(now())
+  end_date             DateTime?
+  expected_return_date DateTime
+  total                Decimal?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @default(now())
+
+  @@map("rentals")
+}
+
+model UserToken {
+  id            String   @id @default(uuid())
+  refresh_token String
+  user_id       String
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  expires_date  DateTime
+  created_at    DateTime @default(now())
+
+  @@map("users_tokens")
+}

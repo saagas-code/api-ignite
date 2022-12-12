@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "cars" ALTER COLUMN "daily_rate" SET DATA TYPE DECIMAL(65,30),
+ALTER COLUMN "fine_amount" SET DATA TYPE DECIMAL(65,30);

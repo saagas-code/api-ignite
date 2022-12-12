@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "rentals" ALTER COLUMN "end_date" DROP NOT NULL,
+ALTER COLUMN "total" DROP NOT NULL;
