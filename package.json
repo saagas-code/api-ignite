@@ -47,7 +47,8 @@
     "migrate:up": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:run -d src/database/postgres.ts",
     "migration:down": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm migration:revert -d src/modules/config/ormconfig.ts",
     "test": "jest",
-    "start": "node dist/src/server.js"
+    "build": "npx tsc",
+    "start": "node dist/server.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
