@@ -35,7 +35,7 @@ export class RefreshTokenUseCase {
       throw new AppError("Refresh Token does not exists!")
     }
     
-    await this.usersTokensRepository.deleteById(userToken.id);
+    await this.usersTokensRepository.deleteById(userToken.id!);
 
     const expires_date = this.dayjsDateProvider.addDays(30)
 

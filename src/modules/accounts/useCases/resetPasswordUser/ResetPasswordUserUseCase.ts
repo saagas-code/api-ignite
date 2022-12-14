@@ -40,6 +40,6 @@ export class ResetPasswordUserUseCase {
 
     await this.usersRepository.update(user as IUpdateUserDTO, user.id as string)
 
-    await this.usersTokensRepository.deleteById(userToken.id)
+    await this.usersTokensRepository.deleteById(userToken.id!)
   }
 }

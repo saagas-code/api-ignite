@@ -1,4 +1,4 @@
-
+import {v4 as uuidV4} from "uuid"
 
 export class User {
   id?: string;
@@ -10,5 +10,9 @@ export class User {
   avatar?: string | null; 
   created_at?: Date;
 
-  constructor() {}
+  constructor() {
+    if(!this.id) {
+      this.id = uuidV4();
+    }
+  }
 }
